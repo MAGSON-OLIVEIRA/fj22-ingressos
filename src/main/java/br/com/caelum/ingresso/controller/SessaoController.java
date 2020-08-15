@@ -1,5 +1,6 @@
 package br.com.caelum.ingresso.controller;
 
+import javax.naming.Binding;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import br.com.caelum.ingresso.dao.FilmeDao;
 import br.com.caelum.ingresso.dao.SalaDao;
 import br.com.caelum.ingresso.dao.SessaoDao;
 import br.com.caelum.ingresso.model.Sessao;
+import br.com.caelum.ingresso.model.form.SessaoForm;
 
 @Controller
 public class SessaoController {
@@ -33,15 +35,26 @@ public class SessaoController {
 		ModelAndView mav = new ModelAndView("sessao/sessao");
 		mav.addObject("sala", salaDao.findOne(salaId));
 		mav.addObject("filmes", filmeDao.findAll());
+		mav.addObject("form", new SessaoForm());
 		return mav;
 	}
 	
 	@PostMapping("/admin/sessao")
 	@Transactional
-	public ModelAndView salvar(@Valid Sessao sessao,  BindingResult result) {
-
+	public ModelAndView salvar(@Valid SessaoForm form, BindingResult result) {
+		if(result.hasErrors()) return form(form.getSalaId(), form);
+		Sessao sessao = form.toSessao(salaDao, filmeDao);
 		sessaoDao.save(sessao);
-		ModelAndView mav = new ModelAndView("redirect:/admin/sessao/"+sessao.getSala().getId());
+		ModelAndView mav = new ModelAndView("redirect:/admin/sala/"+form.getSalaId()+"/sessoes");
+		return mav;
+	}
+
+	//@RequestParam("salaId") 
+	private ModelAndView form(Integer salaId, SessaoForm form) {
+		ModelAndView mav = new ModelAndView("sessao/sessao");
+		mav.addObject("sala", salaDao.findOne(salaId));
+		mav.addObject("filmes", filmeDao.findAll());
+		mav.addObject("form", form);
 		return mav;
 	}
 	
