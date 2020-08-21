@@ -1,5 +1,7 @@
 package br.com.caelum.ingresso.controller;
 
+import java.util.List;
+
 import javax.naming.Binding;
 import javax.validation.Valid;
 
@@ -17,6 +19,7 @@ import br.com.caelum.ingresso.dao.SalaDao;
 import br.com.caelum.ingresso.dao.SessaoDao;
 import br.com.caelum.ingresso.model.Sessao;
 import br.com.caelum.ingresso.model.form.SessaoForm;
+import br.com.caelum.ingresso.validation.GerenciadorDeSessao;
 
 @Controller
 public class SessaoController {
@@ -44,9 +47,20 @@ public class SessaoController {
 	public ModelAndView salvar(@Valid SessaoForm form, BindingResult result) {
 		if(result.hasErrors()) return form(form.getSalaId(), form);
 		Sessao sessao = form.toSessao(salaDao, filmeDao);
-		sessaoDao.save(sessao);
-		ModelAndView mav = new ModelAndView("redirect:/admin/sala/"+form.getSalaId()+"/sessoes");
-		return mav;
+		
+		if(extracted(sessao)) {
+			sessaoDao.save(sessao);
+			return  new ModelAndView("redirect:/admin/sala/"+form.getSalaId()+"/sessoes");
+		}
+		
+
+		return form(form.getSalaId(), form);
+	}
+
+	private boolean extracted(Sessao sessao) {
+		List<Sessao> asSessoes = sessaoDao.buscaSessoesDaSala(sessao.getSala());
+		GerenciadorDeSessao gerenciar = new GerenciadorDeSessao(asSessoes);
+		return gerenciar.cabe(sessao);
 	}
 
 	//@RequestParam("salaId") 
