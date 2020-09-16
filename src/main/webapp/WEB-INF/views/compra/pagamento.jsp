@@ -65,7 +65,7 @@
             <div class="form-group">
                 <div class="col-md-8">
                     <label for="cartaoDeCredito">Cartão de Crédito:</label>
-                    <input id="cartaoDeCredito" type="text" name="cartaoDeCredito" class="form-control">
+                    <input id="cartaoDeCredito" type="text" name="cartaoDeCredito" class="form-control" >
                 </div>
 
                 <div class="col-md-4">

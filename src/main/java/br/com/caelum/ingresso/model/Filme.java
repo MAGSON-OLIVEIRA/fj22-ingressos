@@ -21,7 +21,7 @@ public class Filme {
     private String nome;
     private Duration duracao;
     private String genero;
-    private BigDecimal preco;
+    private BigDecimal preco = BigDecimal.ZERO;
     
     
     
@@ -81,9 +81,7 @@ public class Filme {
 		this.preco = preco;
 	}
 
-	public void setDuracao(Duration duracao) {
-		this.duracao = duracao;
-	}
+
     
     
 }

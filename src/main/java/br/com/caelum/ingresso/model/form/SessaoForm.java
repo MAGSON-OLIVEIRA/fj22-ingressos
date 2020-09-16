@@ -25,7 +25,7 @@ public class SessaoForm {
 	@NotNull
 	private Integer filmeId;
 	
-	@NotNull
+
 	private BigDecimal preco;
 	
 	public Sessao toSessao(SalaDao salaDao, FilmeDao filmeDao) {
@@ -56,6 +56,14 @@ public class SessaoForm {
 
 	public void setFilmeId(Integer filmeId) {
 		this.filmeId = filmeId;
+	}
+
+	public BigDecimal getPreco() {
+		return preco;
+	}
+
+	public void setPreco(BigDecimal preco) {
+		this.preco = preco;
 	}
 	
 	

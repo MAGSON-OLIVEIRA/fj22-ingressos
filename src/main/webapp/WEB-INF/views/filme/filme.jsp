@@ -7,6 +7,7 @@
 <ingresso:template>
     <jsp:body>
 		<div class=" col-md-6 col-md-offset-3">
+		
         <c:set var="bindingResult" value="${requestScope['org.springframework.validation.BindingResult.filme']}"/>
 
         <form action='/admin/filme' method="post">
